@@ -88,14 +88,8 @@ class PX6Client:
 
         # Формируем URL согласно документации: https://px6.link/api/{api_key}?method={method}&{params}
         url = f"{self.BASE_URL}/{self.api_key}/{method}"
-
-        # all_params = {"method": method}
-        # if params:
-        #     all_params.update(params)
-
         async with self._session.get(url, params=params) as response:
             data = await response.json()
-
             if data.get("status") == "no":
                 error_id = int(data.get("error_id", 0))
                 error = data.get("error", "Unknown error")
@@ -140,7 +134,8 @@ class PX6Client:
             "version": version.value
         }
         
-        data = await self._request("getcountry", params)
+        data = await self._request("getcount", params)
+
         return CountInfo.from_dict(data)
     
     async def get_countries(self, version: ProxyVersion = ProxyVersion.IPV6) -> CountryList:
@@ -155,7 +150,7 @@ class PX6Client:
         """
         params = {"version": version.value}
         
-        data = await self._request("getcountries", params)
+        data = await self._request("getcountry", params)
         return CountryList.from_dict(data)
     
     async def get_proxies(self,

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="aioproxy6",
-    version="0.1.0",
+    version="0.1.1",
     author="vasmarfas",
     author_email="admin@vasmarfas.com",
     description="Асинхронный клиент для API px6.link (proxy6.net)",

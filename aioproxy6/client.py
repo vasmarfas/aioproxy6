@@ -85,7 +85,7 @@ class PX6Client:
             self._session = aiohttp.ClientSession()
             self._own_session = True
             
-        full_params = {"method": method, "key": self.api_key}
+        full_params = {"key": self.api_key, "method": method}
         if params:
             full_params.update(params)
             

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aioproxy6"
+version = "0.1.0"
+authors = [
+    {name = "vasmarfas", email = "admin@vasmarfas.com"},
+]
+description = "Асинхронный клиент для API px6.link (proxy6.net)"
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Intended Audience :: Developers",
+]
+dependencies = [
+    "aiohttp>=3.7.0",
+]
+keywords = ["proxy", "proxy6", "px6", "async", "aiohttp", "api client"]
+
+[project.urls]
+"Homepage" = "https://github.com/vasmarfas/aioproxy6"
+"Bug Tracker" = "https://github.com/vasmarfas/aioproxy6/issues"

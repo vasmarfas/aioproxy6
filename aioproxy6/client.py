@@ -45,60 +45,64 @@ class PX6Client:
     """Клиент для работы с API px6.link"""
 
     BASE_URL = "https://px6.link/api"
-    
+
     def __init__(self, api_key: str, session: Optional[aiohttp.ClientSession] = None):
         """
         Инициализация клиента
-        
+
         Args:
             api_key: API ключ
             session: Сессия aiohttp (если None, будет создана новая)
+
         """
         self.api_key = api_key
         self._session = session
         self._own_session = session is None
-    
+
     async def __aenter__(self):
         if self._own_session:
             self._session = aiohttp.ClientSession()
         return self
-    
+
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         if self._own_session and self._session:
             await self._session.close()
-    
+
     async def _request(self, method: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Выполнение запроса к API
-        
+
         Args:
             method: Метод API
             params: Параметры запроса
-            
+
         Returns:
             Ответ API в виде словаря
-            
+
         Raises:
             PX6Exception: Если API вернул ошибку
         """
         if self._session is None:
             self._session = aiohttp.ClientSession()
             self._own_session = True
-            
-        full_params = {"key": self.api_key, "method": method}
-        if params:
-            full_params.update(params)
-            
-        async with self._session.get(self.BASE_URL, params=full_params) as response:
+
+        # Формируем URL согласно документации: https://px6.link/api/{api_key}?method={method}&{params}
+        url = f"{self.BASE_URL}/{self.api_key}/{method}"
+
+        # all_params = {"method": method}
+        # if params:
+        #     all_params.update(params)
+
+        async with self._session.get(url, params=params) as response:
             data = await response.json()
-            
+
             if data.get("status") == "no":
                 error_id = int(data.get("error_id", 0))
                 error = data.get("error", "Unknown error")
                 raise PX6Exception(error_id, error)
-                
+
             return data
-    
+
     async def get_price(self, count: int, period: int, version: ProxyVersion = ProxyVersion.IPV6) -> PriceInfo:
         """
         Получение стоимости заказа
